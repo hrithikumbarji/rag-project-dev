@@ -17,7 +17,7 @@ embeddings = HuggingFaceEmbeddings(
 
 db = Chroma(
     collection_name="gita_collection",
-    persist_directory="./ingest/chroma_db",
+    persist_directory="./chroma_db",
     embedding_function=embeddings
 )
 
