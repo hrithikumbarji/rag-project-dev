@@ -84,7 +84,7 @@ if "qa_result" not in st.session_state:
 if "input_key" not in st.session_state:
     st.session_state.input_key = 0
 
-# 5. Interaction UI
+# Interaction UI
 question = st.text_input(
     "Ask the Gita", 
     placeholder="Seek guidance from the Lord...", 
