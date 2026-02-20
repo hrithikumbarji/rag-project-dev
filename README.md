@@ -300,8 +300,6 @@ python ingest\embed_chunks.py
 uvicorn api.main:app --reload
 ```
 
-###Runs at:
-
 API runs at: 
 
 ```
@@ -316,8 +314,6 @@ http://localhost:8000
 ```bash
 streamlit run app.py
 ```
-
-###Runs at:
 
 UI opens at: 
 
