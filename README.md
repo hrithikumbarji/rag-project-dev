@@ -1,9 +1,10 @@
 # 🕉️ GitaGPT — Advanced HyDE-Based RAG for Bhagavad Gita Q&A
 
-> A Context-Grounded Retrieval-Augmented Generation (RAG) API for Exploring the Teachings of the Bhagavad Gita
+> A Context-Grounded Retrieval-Augmented Generation (RAG) API + Web UI for Exploring the Teachings of the Bhagavad Gita
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
+![Streamlit](https://img.shields.io/badge/Streamlit-UI-red)
 ![ChromaDB](https://img.shields.io/badge/VectorDB-ChromaDB-purple)
 ![Groq](https://img.shields.io/badge/LLM-Llama--3.3--70B-orange)
 ![Embeddings](https://img.shields.io/badge/Embeddings-all--MiniLM--L6--v2-blue)
@@ -14,36 +15,30 @@
 
 GitaGPT is an advanced **Retrieval-Augmented Generation (RAG)** system designed to answer Bhagavad Gita–related questions using structured Q&A knowledge and semantic retrieval.
 
-This system combines:
+It includes:
 
-- 🧠 **HyDE (Hypothetical Document Expansion)**
-- 🔍 **Semantic Vector Search (ChromaDB)**
-- 📊 **Similarity Score Threshold Filtering**
-- 🔒 **Strict Context-Constrained Answering**
-- ⚡ **FastAPI Backend**
-- 💻 **Local GPU Embeddings (Apple MPS Support)**
+- ⚡ FastAPI backend API
+- 💻 Streamlit web interface (`app.py`)
+- 🧠 HyDE (Hypothetical Document Expansion)
+- 🔍 ChromaDB semantic vector search
+- 📊 Similarity score filtering
+- 🔒 Strict context-grounded answering
+- 🧬 Deterministic embeddings (SHA256 IDs)
 
-It is optimized for:
+The system is optimized for:
 
 - Conceptual understanding
 - Explanation-based learning
 - Reduced hallucination
-- Deterministic vector storage
+- Scalable scripture upgrades
 
 ---
 
 # 🚀 Key Features
 
-## ✅ 1. HyDE Retrieval Enhancement
+## 🧠 1. HyDE Retrieval Enhancement
 
 Before querying the vector database, the system generates a **hypothetical Gita-style explanation** using an LLM.
-
-This improves semantic recall for abstract spiritual questions like:
-
-- What is true duty?
-- How to overcome attachment?
-- What is karma yoga?
-- What is detachment in action?
 
 Pipeline:
 
@@ -51,11 +46,16 @@ Pipeline:
 User Question → HyDE Expansion → Enhanced Query
 ```
 
-This bridges modern phrasing with scriptural language.
+This improves retrieval for abstract spiritual queries like:
+
+- What is karma yoga?
+- What is detachment?
+- What is true duty?
+- How to overcome attachment?
 
 ---
 
-## ✅ 2. Vector Search with Similarity Filtering
+## 🔍 2. Vector Search with Similarity Filtering
 
 Uses:
 
@@ -64,29 +64,30 @@ Uses:
 - Cosine similarity
 - Configurable similarity threshold
 
-Weak matches are filtered out before response generation, reducing hallucination risk.
+Weak matches are filtered before generation, reducing hallucination risk.
 
 ---
 
-## ✅ 3. Context-Constrained Answering
+## 🔒 3. Strict Context-Constrained Answering
 
-The LLM is explicitly instructed to:
+The LLM is instructed to:
 
 - Answer ONLY using retrieved context
-- Refuse when information is insufficient
+- Refuse when insufficient data
 - Avoid external knowledge
 - Limit responses to 5–6 lines
 
-This enforces grounded generation.
+This ensures grounded output.
 
 ---
 
-## ✅ 4. Deterministic Embedding Architecture
+## 🧬 4. Deterministic Embedding Architecture
 
-- SHA256-based IDs prevent duplicate embeddings
-- Automatic Chroma persistence
+- SHA256-based vector IDs
+- Duplicate prevention
 - Batch-based ingestion
-- Stable vector IDs for reproducibility
+- Persistent Chroma storage
+- Apple Silicon GPU (MPS) support
 
 ---
 
@@ -120,7 +121,7 @@ rag-project-dev/
 │   └── __init__.py
 │
 ├── ingest/
-|   ├── download_dataset.py
+│   ├── download_dataset.py
 │   ├── clean_dataset.py
 │   ├── chunk_dataset.py
 │   └── embed_chunks.py
@@ -131,6 +132,14 @@ rag-project-dev/
 │   └── chunk_dataset.json
 │
 ├── chroma_db/
+│
+├── app.py                # Streamlit Web UI
+│
+├── setup.sh              # Creates venv & installs dependencies
+├── activate.sh           # Activates virtual environment
+├── deactivate.sh         # Deactivates virtual environment
+│
+├── requirements.txt
 └── README.md
 ```
 
@@ -138,14 +147,17 @@ rag-project-dev/
 
 # 📦 Chunk Format
 
-Structured Q&A storage format:
+Structured Q&A chunks are stored in `chunk_dataset.json` as:
 
 ```json
 {
-  "text": "Answer text only",
+  "text": "Dhritarashtra is blind, both physically and symbolically — representing ignorance...",
   "metadata": {
-    "source_question": "...",
-    "source_file": "...",
+    "doc_id": 0,
+    "source_question": "Why does Dhritarashtra ask Sanjaya to describe the battlefield?",
+    "source_file": "Bhagavad-Gita-QA",
+    "chunk_index": 0,
+    "total_chunks": 1,
     "type": "qa_explanation"
   }
 }
@@ -156,56 +168,74 @@ Design goals:
 - Question-aware retrieval
 - Explanation-focused learning
 - Clean metadata tracking
-- Scalable toward verse-level upgrades
+- Future upgrade path toward verse-level ingestion
 
 ---
 
-# ⚙️ Installation
+# ⚙️ Environment Setup
 
-## 1️⃣ Create Virtual Environment
+## 🐧 macOS / Linux (Recommended)
 
-macOS / Linux:
+### 1️⃣ Run Automated Setup
 
 ```bash
-python -m venv venv
-source venv/bin/activate
+bash setup.sh
 ```
 
-Windows:
+This will:
+
+- Create `venv/`
+- Activate environment
+- Upgrade pip
+- Install dependencies
+
+### ▶️ Activate Environment
+
+```bash
+source activate.sh
+```
+
+### ⏹️ Deactivate Environment
+
+```bash
+source deactivate.sh
+```
+
+---
+
+## 🪟 Windows Setup (Manual)
+
+### 1️⃣ Create Virtual Environment
 
 ```powershell
 python -m venv venv
+```
+
+### 2️⃣ Activate
+
+PowerShell:
+
+```powershell
 venv\Scripts\Activate.ps1
 ```
 
----
+CMD:
 
-## 2️⃣ Install Dependencies
+```cmd
+venv\Scripts\activate.bat
+```
 
-```bash
+### 3️⃣ Install Dependencies
+
+```powershell
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Core dependencies include:
+### ⏹️ Deactivate
 
-- fastapi
-- uvicorn
-- langchain
-- langchain-chroma
-- langchain-groq
-- langchain-huggingface
-- chromadb
-- sentence-transformers
-- python-dotenv
-
----
-
-## 3️⃣ Add Environment Variables
-
-Create a `.env` file:
-
-```
-GROQ_API_KEY=your_api_key_here
+```powershell
+deactivate
 ```
 
 ---
@@ -224,9 +254,7 @@ python ingest/download_dataset.py
 python ingest/clean_dataset.py
 ```
 
-Transforms raw Q&A into structured format.
-
----
+Transforms raw Q&A into structured JSON.
 
 ## Step 3 — Chunk Dataset
 
@@ -236,11 +264,9 @@ python ingest/chunk_dataset.py
 
 Features:
 
+- Adds doc_id and chunk metadata
 - Avoids over-splitting short answers
-- Adds document metadata
 - SHA256-based deduplication
-
----
 
 ## Step 4 — Embed into Chroma
 
@@ -251,48 +277,46 @@ python ingest/embed_chunks.py
 Features:
 
 - Normalized vectors
-- Deterministic vector IDs
+- Deterministic IDs
 - Batch insertion
-- Persistent storage
+- Persistent storage in `chroma_db/`
 
 ---
 
-# 🖥 Running the API
+# 🖥 Running the Application
 
-From project root:
+## 1️⃣ Start Backend API
 
 ```bash
 uvicorn api.main:app --reload
 ```
 
-If inside `api/` directory:
-
-```bash
-uvicorn main:app --reload
-```
-
-Interactive API docs:
-
-```
-http://127.0.0.1:8000/docs
-```
-API runs at
+API runs at:
 
 ```
 http://127.0.0.1:8000
 ```
 
-Start Web UI
+Interactive docs:
+
+```
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## 2️⃣ Start Web UI
 
 ```bash
 streamlit run app.py
 ```
-UI opens at
+
+UI opens at:
 
 ```
 http://localhost:8501
-
 ```
+
 ---
 
 # 📡 API Usage
@@ -336,11 +360,11 @@ http://localhost:8501
 
 # 🧠 Current System Type
 
-This project currently operates as:
+This system currently operates as:
 
 > **Retrieval-Augmented FAQ Assistant for Bhagavad Gita Teachings**
 
-It does **not yet** use verse-level scripture ingestion.
+It does NOT yet use verse-level scripture ingestion.
 
 ---
 
@@ -367,7 +391,8 @@ This implementation includes:
 - Deterministic embedding architecture
 - Structured ingestion pipeline
 - Guarded LLM prompting
-- GPU-accelerated embeddings
+- GPU-ready embedding support
+- API + UI interface
 
 For an MVP devotional AI assistant, this is a robust and scalable foundation.
 
