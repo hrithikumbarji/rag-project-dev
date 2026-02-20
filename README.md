@@ -98,7 +98,7 @@ python ingest/embed_chunks.py
 - Creates persistent vector store:
 
 ```
-ingest/chroma_db/
+./chroma_db
 ```
 
 ---
