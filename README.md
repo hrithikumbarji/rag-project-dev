@@ -1,47 +1,241 @@
-# 🕉️ GitaGPT: Advanced Spiritual RAG
+# 🕉️ GitaGPT — HyDE-Enhanced Grounded RAG
 
-[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Streamlit](https://img.shields.io/badge/Frontend-Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
-[![Groq](https://img.shields.io/badge/LLM-Llama_3.3_70B-orange?style=for-the-badge)](https://groq.com/)
-[![Docker](https://img.shields.io/badge/Docker-Containerized-blue?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+> A High-Trust AI Assistant for Scripturally Grounded Wisdom from the Bhagavad Gita
 
-An advanced AI assistant that provides grounded, verified wisdom from the **Bhagavad Gita** using a self-correcting RAG pipeline. Built to run efficiently on local machines (like 8GB Macs) while leveraging cloud-scale LLMs.
-
----
-
-## ✨ Key Features
-
-### 🔍 Path A: Multi-Query Expansion
-GitaGPT doesn't just search for your words; it understands your **intent**. It generates 3 distinct spiritual variations of your query to bridge the gap between modern language and ancient Sanskrit concepts.
-
-### ✅ Path B: Self-Corrective Grading
-To eliminate hallucinations, every retrieved verse is audited by a "Grader" LLM. If a verse isn't contextually relevant to your question, it's discarded before the final answer is written.
-
-### 📜 Source Attribution
-Every answer is cited. The system provides specific **Chapter and Verse** numbers so you can verify the wisdom directly in the scriptures.
+![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
+![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-red)
+![ChromaDB](https://img.shields.io/badge/VectorDB-ChromaDB-purple)
+![Groq](https://img.shields.io/badge/LLM-Llama--3.3--70B-orange)
 
 ---
 
-## 🛠️ Tech Stack
+# 🌟 Overview
 
-- **Frontend:** Streamlit (Saffron & Gold Spiritual UI)
-- **Backend:** FastAPI
-- **Vector DB:** ChromaDB
-- **Embeddings:** `all-MiniLM-L6-v2` (Running locally via HuggingFace)
-- **Inference:** Llama-3.3-70B via **Groq** (Ultra-low latency)
+GitaGPT is an advanced **HyDE-powered Retrieval-Augmented Generation (RAG)** system designed to deliver **accurate, context-grounded wisdom** from the Bhagavad Gita.
+
+Unlike naive RAG systems that rely on a single raw query, GitaGPT uses:
+
+- 🧠 Hypothetical Document Expansion (HyDE)
+- 🔍 Enhanced Semantic Retrieval
+- 📖 Strict Context-Constrained Answering
+- 🏷️ Chapter & Verse Citation Extraction
+
+This ensures responses are:
+
+- ✅ Scripturally Grounded  
+- ✅ Semantically Accurate  
+- ✅ Hallucination-Resistant  
+- ✅ Fully Verifiable  
 
 ---
 
-## 🚀 Getting Started
+# 🏗️ Project Structure
 
-### Prerequisites
-- Python 3.10+
-- A [Groq API Key](https://console.groq.com/)
-- Docker (Optional)
+```text
+rag-project-dev/
+│
+├── ingest/
+│   ├── ingest.py           # Data processing & Vector DB creation
+│   └── chroma_db/          # Generated Vector Store
+│
+├── api/
+│   └── main.py             # FastAPI Backend (HyDE + RAG Logic)
+│
+├── app.py                  # Streamlit Frontend
+├── requirements.txt        # Dependencies
+└── .env                    # GROQ API Key
+```
 
-### Installation
+---
 
-1. **Clone the repository**
-   ```bash
-   git clone [https://github.com/hrithikumbarji/gitagpt.git](https://github.com/hrithikumbarji/gitagpt.git)
-   cd gitagpt
+# 🧠 Architecture
+
+## 🔍 Step 1 — HyDE Query Expansion
+
+Instead of embedding only the user question, GitaGPT first generates a **hypothetical spiritual paragraph** in the style of the Bhagavad Gita.
+
+Example:
+
+User Question:
+> How do I control stress?
+
+HyDE Expansion:
+> The restless mind, afflicted by worldly agitation, must be restrained through discipline, detachment, and devotion to one’s dharma...
+
+This bridges the gap between:
+
+- Modern language  
+- Scriptural terminology  
+
+This technique is called:
+
+> **HyDE (Hypothetical Document Embeddings)**
+
+---
+
+## 📚 Step 2 — Enhanced Semantic Retrieval
+
+We combine:
+
+```
+[User Question] + [HyDE Expansion]
+```
+
+Then perform similarity search in ChromaDB.
+
+This results in:
+
+- Higher semantic alignment  
+- Better verse retrieval  
+- Reduced irrelevant matches  
+
+---
+
+## 📖 Step 3 — Strict Grounded Generation
+
+The final answer is generated using:
+
+- Only retrieved verses  
+- No external knowledge  
+- No speculative additions  
+
+System Prompt Constraint:
+
+```
+Answer ONLY using the context.
+Cite Chapter/Verse if available.
+Limit to 5–6 lines.
+```
+
+This ensures grounded, scripture-based responses.
+
+---
+
+# 🛠️ Tech Stack
+
+| Component | Technology |
+|-----------|------------|
+| LLM | Llama-3.3-70B (via Groq) |
+| Embeddings | all-MiniLM-L6-v2 |
+| Vector DB | ChromaDB |
+| Backend | FastAPI |
+| Frontend | Streamlit |
+| Framework | LangChain |
+
+---
+
+# 🚀 Getting Started
+
+## 1️⃣ Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 2️⃣ Add API Key
+
+Create a `.env` file:
+
+```env
+GROQ_API_KEY=your_key_here
+```
+
+---
+
+## 3️⃣ Ingest the Bhagavad Gita
+
+```bash
+python ingest/ingest.py
+```
+
+This creates:
+
+```
+ingest/chroma_db/
+```
+
+---
+
+## 4️⃣ Start Backend
+
+```bash
+uvicorn api.main:app --host 0.0.0.0 --port 8000
+```
+
+---
+
+## 5️⃣ Launch UI
+
+```bash
+streamlit run app.py
+```
+
+---
+
+# 🆚 Why This Is Not Naive RAG
+
+| Naive RAG | GitaGPT |
+|-----------|---------|
+| Raw user query only | HyDE-expanded query |
+| Weak semantic match | Scriptural-style expansion |
+| Higher hallucination risk | Context-only generation |
+| No structured citation | Chapter/Verse extraction |
+
+---
+
+# 🧘 Example Flow
+
+User asks:
+> How do I control my restless mind?
+
+System:
+
+1. Generates HyDE expansion
+2. Retrieves top 5 relevant verses
+3. Extracts Chapter/Verse metadata
+4. Produces grounded 5-line response
+5. Returns citation list
+
+---
+
+# 🔒 Hallucination Resistance Strategy
+
+- Temperature = 0
+- Context-only answering
+- No external knowledge injection
+- Strict system prompt constraint
+- Limited response length
+
+---
+
+# 🌺 Future Improvements
+
+- [ ] Add LLM-based relevance grader (Self-Correcting RAG)
+- [ ] Multi-query expansion (3 variations instead of 1 HyDE)
+- [ ] Hybrid search (BM25 + Vector)
+- [ ] Verse highlighting in UI
+- [ ] Daily Verse Mode
+- [ ] Audio Recitation
+- [ ] Sanskrit + Transliteration Toggle
+
+---
+
+# 👨‍💻 Author
+
+**Hrithik Umbarji**
+
+Crafted with devotion, discipline, and reverence for sacred knowledge.
+
+---
+
+# 🕉️ Guiding Principle
+
+“Yogaḥ karmasu kauśalam.”  
+*Excellence in action is Yoga.* — Bhagavad Gita 2.50
+
+---
+
+⭐ If you find this meaningful, please star the repository.
