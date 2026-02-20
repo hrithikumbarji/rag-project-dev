@@ -8,8 +8,6 @@ st.set_page_config(
     layout="centered"
 )
 
-# 2. Spiritual CSS & Google Fonts
-# This must be wrapped in <style> tags and use unsafe_allow_html=True
 st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -70,17 +68,15 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 3. Header (Using native alignment for 1.52+)
 st.title("🕉️ GitaGPT", text_alignment="center")
 st.markdown("<p style='text-align: center; font-family: Playfair Display; font-style: italic; color: #D4AF37;'>Ground your curiosity in the eternal verses of the Bhagavad Gita</p>", unsafe_allow_html=True)
 
-# 4. API & Logic
+
 import streamlit as st
 import requests
 
-# ... (Keep your Page Config and CSS from the previous version here) ...
 
-# 4. API & Logic
+# 2. API & Logic
 API_URL = "http://127.0.0.1:8000/ask"
 
 if "qa_result" not in st.session_state:
@@ -109,20 +105,20 @@ if st.button("Seek Wisdom") and question.strip():
     st.session_state.input_key += 1
     st.rerun()
 
-# 6. Results Section
+# 3. Results Section
 if st.session_state.qa_result:
     data = st.session_state.qa_result
     
     # User's Question
     st.markdown(f"<div class='spiritual-card user-border'><div class='role-label'>Seeker</div>{question}</div>", unsafe_allow_html=True)
 
-    # NEW: The HyDE Expansion (Reasoning)
+# 4. The HyDE Expansion (Reasoning)
     if "hyde_expansion" in data:
         with st.expander("✨ Divine Interpretation (Internal Reasoning)"):
             st.write(data["hyde_expansion"])
             st.caption("This paragraph was generated to bridge the gap between your modern query and ancient wisdom.")
 
-    # The Final Answer
+# 5. The Final Answer
     st.markdown(f"""
         <div class='spiritual-card assistant-border'>
             <div class='role-label'>Eternal Wisdom</div>
@@ -130,7 +126,7 @@ if st.session_state.qa_result:
         </div>
     """, unsafe_allow_html=True)
 
-    # NEW: Source Attribution
+# 6. Source Attribution
     if data.get("sources"):
         st.markdown("<div style='margin-top:10px; font-weight:bold; color:#FFD700;'>📜 Sources:</div>", unsafe_allow_html=True)
         st.write(", ".join([f"`{s}`" for s in data["sources"]]))

@@ -18,7 +18,7 @@ for row in tqdm(dataset):
     combined_content = f"Question: {question}\nAnswer: {answer}"
     docs.append({
         "text": combined_content,
-        "file": "Bhagavad-Gita-QA"  # The CSV doesn't have a 'file_name' column
+        "file": "Bhagavad-Gita-QA"
     })
 
 with open("data/raw.json", "w", encoding="utf-8") as f:

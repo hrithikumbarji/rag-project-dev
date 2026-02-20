@@ -28,17 +28,14 @@ chunks = []
 print(f"Chunking {len(docs)} documents...")
 
 for d in docs:
-    # Use the full text we built in the previous step
     content = d["text"]
     source_q = d["metadata"].get("source_question", "Unknown")
     
-    # Split the text into smaller pieces
     parts = splitter.split_text(content)
     
     for i, p in enumerate(parts):
         text_hash = get_hash(p)
         
-        # Deduplication check
         if text_hash in seen_hashes:
             continue
         seen_hashes.add(text_hash)
@@ -52,7 +49,7 @@ for d in docs:
             }
         })
 
-# 3. Save the chunks
+# 2. Save the chunks
 with open("data/chunks.json", "w", encoding="utf-8") as f:
     json.dump(chunks, f, indent=2, ensure_ascii=False)
 

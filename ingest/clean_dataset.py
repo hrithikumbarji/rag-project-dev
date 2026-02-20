@@ -38,7 +38,6 @@ for r in rows:
         
         # We skip rows where either side is empty
         if q_content and a_content:
-            # This is the 'RAG-Ready' structure
             docs.append({
                 # 'text' is what the AI will read to generate its response
                 "text": f"Question: {q_content}\nAnswer: {a_content}",

@@ -20,9 +20,8 @@ with open("data/chunks.json", "r", encoding="utf-8") as f:
 total_chunks = len(chunks)
 print(f"✅ Loaded {total_chunks} chunks")
 
-# 3. Load Embedding Model (Optimized for Mac)
 print("🧠 Loading embedding model...")
-model_kwargs = {'device': 'mps'} # <--- Uses Apple Silicon GPU
+model_kwargs = {'device': 'mps'}
 encode_kwargs = {'normalize_embeddings': True}
 
 embeddings = HuggingFaceEmbeddings(
@@ -32,16 +31,16 @@ embeddings = HuggingFaceEmbeddings(
 )
 print("✅ Embedding model ready on MPS (GPU)")
 
-# 4. Initialize Chroma
+# 3. Initialize Chroma
 print("📦 Initializing Chroma vector store...")
 db = Chroma(
-    collection_name="gita_collection", # Changed from 'epstein' to match project
+    collection_name="gita_collection",
     persist_directory=CHROMA_DIR,
     embedding_function=embeddings
 )
 
-# 5. Embed in Smaller Batches
-BATCH = 200 # <--- Reduced for 8GB RAM stability
+# 4. Embed in Smaller Batches
+BATCH = 200
 print(f"🚀 Starting embedding in batches of {BATCH}")
 
 for i in range(0, total_chunks, BATCH):
