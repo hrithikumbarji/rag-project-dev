@@ -117,8 +117,7 @@ Answer + Sources Returned
 rag-project-dev/
 │
 ├── api/
-│   ├── main.py
-│   └── __init__.py
+│   └── main.py
 │
 ├── ingest/
 │   ├── download_dataset.py
