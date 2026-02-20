@@ -1,398 +1,375 @@
-# 🕉️ GitaGPT — HyDE-Enhanced QA Retrieval RAG
+# 🕉️ GitaGPT — Advanced HyDE-Based RAG for Bhagavad Gita Q&A
 
-> A High-Trust AI Assistant for Learning and Exploring the Wisdom of the Bhagavad Gita
+> A Context-Grounded Retrieval-Augmented Generation (RAG) API for Exploring the Teachings of the Bhagavad Gita
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
-![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-red)
 ![ChromaDB](https://img.shields.io/badge/VectorDB-ChromaDB-purple)
 ![Groq](https://img.shields.io/badge/LLM-Llama--3.3--70B-orange)
+![Embeddings](https://img.shields.io/badge/Embeddings-all--MiniLM--L6--v2-blue)
 
 ---
 
-# 🌟 Overview
+# 📘 Overview
 
-GitaGPT is an advanced **HyDE-powered Retrieval-Augmented Generation (RAG)** system designed to deliver accurate, context-grounded explanations from the Bhagavad Gita.
+GitaGPT is an advanced **Retrieval-Augmented Generation (RAG)** system designed to answer Bhagavad Gita–related questions using structured Q&A knowledge and semantic retrieval.
 
-Instead of retrieving isolated verses, GitaGPT retrieves **structured Question–Answer knowledge chunks**, making it optimized for learning and conceptual understanding.
+This system combines:
 
-Unlike naive RAG systems that rely on a single raw query, GitaGPT combines:
+- 🧠 **HyDE (Hypothetical Document Expansion)**
+- 🔍 **Semantic Vector Search (ChromaDB)**
+- 📊 **Similarity Score Threshold Filtering**
+- 🔒 **Strict Context-Constrained Answering**
+- ⚡ **FastAPI Backend**
+- 💻 **Local GPU Embeddings (Apple MPS Support)**
 
-- 🧠 Hypothetical Document Expansion (HyDE)
-- 🔍 Enhanced Semantic Retrieval
-- 📚 Structured Q&A Chunk Retrieval
-- 📖 Strict Context-Constrained Answering
-- 🔒 Hallucination Minimization via grounded prompts
+It is optimized for:
 
-This ensures responses are:
-
-- ✅ Contextually Accurate  
-- ✅ Semantically Aligned with Scripture  
-- ✅ Explanation-Oriented  
-- ✅ Hallucination-Resistant  
+- Conceptual understanding
+- Explanation-based learning
+- Reduced hallucination
+- Deterministic vector storage
 
 ---
 
-# 🏗️ Project Structure
+# 🚀 Key Features
 
-```text
+## ✅ 1. HyDE Retrieval Enhancement
+
+Before querying the vector database, the system generates a **hypothetical Gita-style explanation** using an LLM.
+
+This improves semantic recall for abstract spiritual questions like:
+
+- What is true duty?
+- How to overcome attachment?
+- What is karma yoga?
+- What is detachment in action?
+
+Pipeline:
+
+```
+User Question → HyDE Expansion → Enhanced Query
+```
+
+This bridges modern phrasing with scriptural language.
+
+---
+
+## ✅ 2. Vector Search with Similarity Filtering
+
+Uses:
+
+- `sentence-transformers/all-MiniLM-L6-v2`
+- Normalized embeddings
+- Cosine similarity
+- Configurable similarity threshold
+
+Weak matches are filtered out before response generation, reducing hallucination risk.
+
+---
+
+## ✅ 3. Context-Constrained Answering
+
+The LLM is explicitly instructed to:
+
+- Answer ONLY using retrieved context
+- Refuse when information is insufficient
+- Avoid external knowledge
+- Limit responses to 5–6 lines
+
+This enforces grounded generation.
+
+---
+
+## ✅ 4. Deterministic Embedding Architecture
+
+- SHA256-based IDs prevent duplicate embeddings
+- Automatic Chroma persistence
+- Batch-based ingestion
+- Stable vector IDs for reproducibility
+
+---
+
+# 🏗 Architecture Overview
+
+```
+User Question
+     ↓
+HyDE Expansion (LLM)
+     ↓
+Enhanced Query = Question + HyDE
+     ↓
+Vector Search (ChromaDB)
+     ↓
+Similarity Threshold Filtering
+     ↓
+Context-Constrained LLM Response
+     ↓
+Answer + Sources Returned
+```
+
+---
+
+# 📂 Project Structure
+
+```
 rag-project-dev/
 │
-├── ingest/
-│   ├── download_dataset.py    # Downloads Bhagavad Gita dataset
-│   ├── clean_dataset.py       # Cleans & standardizes raw text
-│   ├── chunk_dataset.py       # Converts text into structured Q&A chunks
-│   └── embed_chunks.py        # Creates embeddings & stores in ChromaDB
-│
 ├── api/
-│   └── main.py                # FastAPI Backend (HyDE + Retrieval Logic)
+│   ├── main.py
+│   └── __init__.py
 │
-├── app.py                     # Streamlit Frontend
+├── ingest/
+|   ├── download_dataset.py
+│   ├── clean_dataset.py
+│   ├── chunk_dataset.py
+│   └── embed_chunks.py
 │
-├── setup.sh                   # Creates venv & installs dependencies (macOS/Linux)
-├── activate.sh                # Activates virtual environment
-├── deactivate.sh              # Deactivates virtual environment
+├── data/
+│   ├── raw.json
+│   ├── cleaned.json
+│   └── chunk_dataset.json
 │
-├── requirements.txt
-└── .env
-```
-
----
-
-# 🔄 Data Ingestion Pipeline (Structured ETL)
-
-GitaGPT follows a clean and modular ingestion workflow.
-
-## 1️⃣ Download Dataset
-
-```bash
-python ingest/download_dataset.py
-```
-
-## 2️⃣ Clean Dataset
-
-```bash
-python ingest/clean_dataset.py
-```
-
-- Removes formatting noise  
-- Normalizes text  
-- Prepares data for structured processing  
-
-## 3️⃣ Chunk Dataset (Q&A Structured)
-
-```bash
-python ingest/chunk_dataset.py
-```
-
-This converts the dataset into structured Question–Answer chunks optimized for retrieval.
-
-## 4️⃣ Embed & Store
-
-```bash
-python ingest/embed_chunks.py
-```
-
-- Uses `all-MiniLM-L6-v2`
-- Stores embeddings in **ChromaDB**
-- Creates persistent vector store:
-
-```
-./chroma_db
+├── chroma_db/
+└── README.md
 ```
 
 ---
 
 # 📦 Chunk Format
 
-Chunks are stored as structured Q&A objects:
+Structured Q&A storage format:
 
 ```json
 {
-  "text": "Question: ... Answer: ...",
+  "text": "Answer text only",
   "metadata": {
     "source_question": "...",
-    "chunk_index": 0,
-    "total_chunks": 1
+    "source_file": "...",
+    "type": "qa_explanation"
   }
 }
 ```
 
-This means retrieval is:
+Design goals:
 
-- Question-aware  
-- Context-preserving  
-- Explanation-focused  
-
-Instead of retrieving raw verses, GitaGPT retrieves **pre-structured explanatory knowledge units**.
-
----
-
-# 🧠 RAG Architecture
-
-## 🔍 Step 1 — HyDE Query Expansion
-
-Before retrieval, the system generates a **hypothetical Gita-style explanation** based on the user's question.
-
-Example:
-
-User:
-> How do I control stress?
-
-HyDE generates:
-> The restless mind, disturbed by worldly agitation, must be steadied through discipline and detachment...
-
-This bridges the gap between:
-
-- Modern language  
-- Scriptural terminology  
-
-Technique used:
-
-> **HyDE (Hypothetical Document Embeddings)**
+- Question-aware retrieval
+- Explanation-focused learning
+- Clean metadata tracking
+- Scalable toward verse-level upgrades
 
 ---
 
-## 📚 Step 2 — Enhanced Semantic Retrieval
+# ⚙️ Installation
 
-Search Query:
+## 1️⃣ Create Virtual Environment
 
-```
-User Question + HyDE Expansion
-```
-
-Then:
-
-- Top 5 semantically similar Q&A chunks retrieved from ChromaDB  
-- Improved alignment with spiritual vocabulary  
-- Reduced irrelevant matches  
-
----
-
-## 📖 Step 3 — Context-Grounded QA Generation
-
-System constraint:
-
-```
-Answer ONLY using the context.
-Limit to 5–6 lines.
-```
-
-This guarantees:
-
-- No external knowledge  
-- No speculation  
-- Answer derived strictly from retrieved Q&A chunks  
-
----
-
-# ⚙️ Environment Setup
-
-## 🐧 macOS / Linux (Recommended)
-
-### 1️⃣ Run Automated Setup
+macOS / Linux:
 
 ```bash
-bash setup.sh
+python -m venv venv
+source venv/bin/activate
 ```
 
-This will:
-
-- Create `venv/`
-- Activate environment
-- Upgrade pip
-- Install dependencies
-
-### ▶️ Activate
-
-```bash
-source activate.sh
-```
-
-### ⏹️ Deactivate
-
-```bash
-source deactivate.sh
-```
-
----
-
-## 🪟 Windows Setup
-
-`setup.sh` is not supported on Windows.
-
-### 1️⃣ Create Virtual Environment
+Windows:
 
 ```powershell
 python -m venv venv
-```
-
-### 2️⃣ Activate
-
-PowerShell:
-
-```powershell
 venv\Scripts\Activate.ps1
 ```
 
-Command Prompt:
+---
 
-```cmd
-venv\Scripts\activate.bat
-```
+## 2️⃣ Install Dependencies
 
-### 3️⃣ Install Requirements
-
-```powershell
-python -m pip install --upgrade pip
+```bash
 pip install -r requirements.txt
 ```
 
-### ⏹️ Deactivate
+Core dependencies include:
 
-```powershell
-deactivate
+- fastapi
+- uvicorn
+- langchain
+- langchain-chroma
+- langchain-groq
+- langchain-huggingface
+- chromadb
+- sentence-transformers
+- python-dotenv
+
+---
+
+## 3️⃣ Add Environment Variables
+
+Create a `.env` file:
+
+```
+GROQ_API_KEY=your_api_key_here
 ```
 
 ---
 
-# 🚀 Running the Application
+# 📊 Data Ingestion Pipeline
 
-## 1️⃣ Activate Environment
-
-macOS / Linux:
-
-```bash
-source activate.sh
-```
-
-Windows:
-
-```powershell
-venv\Scripts\Activate.ps1
-```
-
----
-
-## 2️⃣ Add API Key
-
-Create `.env` file:
-
-```env
-GROQ_API_KEY=your_key_here
-```
-
----
-
-## 3️⃣ Run Ingestion (First Time Only)
-
-macOS / Linux:
+## Step 1 — Download Dataset
 
 ```bash
 python ingest/download_dataset.py
+```
+
+## Step 2 — Clean Dataset
+
+```bash
 python ingest/clean_dataset.py
-python ingest/chunk_dataset.py
-python ingest/embed_chunks.py
 ```
 
-Windows:
-
-```powershell
-python ingest\download_dataset.py
-python ingest\clean_dataset.py
-python ingest\chunk_dataset.py
-python ingest\embed_chunks.py
-```
+Transforms raw Q&A into structured format.
 
 ---
 
-## 4️⃣ Start Backend
+## Step 3 — Chunk Dataset
+
+```bash
+python ingest/chunk_dataset.py
+```
+
+Features:
+
+- Avoids over-splitting short answers
+- Adds document metadata
+- SHA256-based deduplication
+
+---
+
+## Step 4 — Embed into Chroma
+
+```bash
+python ingest/embed_chunks.py
+```
+
+Features:
+
+- Normalized vectors
+- Deterministic vector IDs
+- Batch insertion
+- Persistent storage
+
+---
+
+# 🖥 Running the API
+
+From project root:
 
 ```bash
 uvicorn api.main:app --reload
 ```
 
-API runs at:
+If inside `api/` directory:
+
+```bash
+uvicorn main:app --reload
+```
+
+Interactive API docs:
+
+```
+http://127.0.0.1:8000/docs
+```
+API runs at
 
 ```
 http://127.0.0.1:8000
 ```
 
----
-
-## 5️⃣ Launch Frontend
+Start Web UI
 
 ```bash
 streamlit run app.py
 ```
-
-UI runs at:
+UI opens at
 
 ```
 http://localhost:8501
+
+```
+---
+
+# 📡 API Usage
+
+### POST `/ask`
+
+### Request
+
+```json
+{
+  "question": "What is the meaning of karma yoga?"
+}
+```
+
+### Response
+
+```json
+{
+  "answer": "...",
+  "hyde_expansion": "...",
+  "sources": [
+    "Original source question text"
+  ]
+}
 ```
 
 ---
 
-# 🛠️ Tech Stack
+# 🔒 Hallucination Minimization Strategy
 
-| Component | Technology |
-|-----------|------------|
-| LLM | Llama-3.3-70B (Groq) |
-| Embeddings | all-MiniLM-L6-v2 |
-| Vector Store | ChromaDB |
-| Backend | FastAPI |
-| Frontend | Streamlit |
-| Framework | LangChain |
-
----
-
-# 🆚 Why This Is More Advanced Than Basic RAG
-
-| Basic RAG | GitaGPT |
-|------------|---------|
-| Raw user query only | HyDE-expanded query |
-| Generic document chunks | Structured Q&A chunks |
-| Weak semantic match | Scriptural-style expansion |
-| Loose ingestion | Clean ETL pipeline |
-| Higher hallucination risk | Strict context-only answering |
+| Technique | Implemented |
+|------------|-------------|
+| Temperature = 0 | ✅ |
+| HyDE expansion | ✅ |
+| Similarity threshold filtering | ✅ |
+| Context-only answering | ✅ |
+| Refusal behavior | ✅ |
+| Deterministic embeddings | ✅ |
 
 ---
 
-# 🔒 Hallucination Resistance Strategy
+# 🧠 Current System Type
 
-- Temperature = 0  
-- Context-only answering  
-- Limited output length  
-- No external knowledge injection  
-- Retrieval from curated Q&A chunks  
+This project currently operates as:
 
----
+> **Retrieval-Augmented FAQ Assistant for Bhagavad Gita Teachings**
 
-# 🧘 Example Flow
-
-User asks:
-
-> Why does Dhritarashtra ask Sanjaya to describe the battlefield?
-
-System:
-
-1. Generates HyDE expansion  
-2. Retrieves relevant Q&A chunk  
-3. Uses only retrieved explanation  
-4. Produces concise grounded answer  
+It does **not yet** use verse-level scripture ingestion.
 
 ---
 
-# 🌺 Future Improvements
+# 🚀 Planned Upgrade Path
 
-- [ ] Add chapter/verse metadata support
-- [ ] Implement LLM-based relevance grading
-- [ ] Hybrid search (BM25 + Vector)
-- [ ] Sanskrit + Transliteration toggle
-- [ ] Daily Learning Mode
-- [ ] Audio Recitation
-- [ ] Mobile App version
+- Ingest full Sanskrit + English translation
+- Add chapter/verse metadata
+- Enable precise scripture citation
+- Hybrid BM25 + Vector retrieval
+- Cross-encoder reranking
+- Retrieval confidence scoring
+- Self-verification LLM pass
+- Async FastAPI optimization
+- Docker deployment support
+
+---
+
+# 📈 System Maturity
+
+This implementation includes:
+
+- Multi-step retrieval reasoning
+- HyDE-based semantic expansion
+- Deterministic embedding architecture
+- Structured ingestion pipeline
+- Guarded LLM prompting
+- GPU-accelerated embeddings
+
+For an MVP devotional AI assistant, this is a robust and scalable foundation.
 
 ---
 
