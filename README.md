@@ -395,9 +395,9 @@ Built with discipline, devotion, and reverence for sacred knowledge.
 
 # 🕉️ Guiding Principle
 
-“Yogaḥ karmasu kauśalam.”  
-*Excellence in action is Yoga.* — Bhagavad Gita 2.50
+“tad viddhi praṇipātena paripraśnena sevayā.”  
+*Approach wisdom with humility, inquiry, and service.* — Bhagavad Gita 4.34
 
 ---
 
-⭐ If this project resonates with you, consider starring the repository.
+⭐ If this project helps you learn and reflect, consider starring the repository.
