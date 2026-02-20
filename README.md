@@ -297,12 +297,13 @@ python ingest\embed_chunks.py
 ## 4️⃣ Start Backend
 
 ```bash
-uvicorn api.main:app --host 0.0.0.0 --port 8000
+uvicorn api.main:app --reload
 ```
 
 Runs at:
 
 ```
+API runs at: http://127.0.0.1:8000
 http://localhost:8000
 ```
 
@@ -317,6 +318,7 @@ streamlit run app.py
 Runs at:
 
 ```
+UI opens at: http://localhost:8501
 http://localhost:8501
 ```
 
