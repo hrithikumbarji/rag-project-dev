@@ -1,6 +1,6 @@
-# 🕉️ GitaGPT — HyDE-Enhanced Grounded RAG
+# 🕉️ GitaGPT — HyDE-Enhanced QA Retrieval RAG
 
-> A High-Trust AI Assistant for Scripturally Grounded Wisdom from the Bhagavad Gita
+> A High-Trust AI Assistant for Learning and Exploring the Wisdom of the Bhagavad Gita
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
@@ -12,22 +12,24 @@
 
 # 🌟 Overview
 
-GitaGPT is an advanced **HyDE-powered Retrieval-Augmented Generation (RAG)** system designed to deliver **accurate, citation-backed, context-grounded wisdom** from the Bhagavad Gita.
+GitaGPT is an advanced **HyDE-powered Retrieval-Augmented Generation (RAG)** system designed to deliver accurate, context-grounded explanations from the Bhagavad Gita.
+
+Instead of retrieving isolated verses, GitaGPT retrieves **structured Question–Answer knowledge chunks**, making it optimized for learning and conceptual understanding.
 
 Unlike naive RAG systems that rely on a single raw query, GitaGPT combines:
 
 - 🧠 Hypothetical Document Expansion (HyDE)
 - 🔍 Enhanced Semantic Retrieval
+- 📚 Structured Q&A Chunk Retrieval
 - 📖 Strict Context-Constrained Answering
-- 🏷️ Automatic Chapter & Verse Citation Extraction
 - 🔒 Hallucination Minimization via grounded prompts
 
 This ensures responses are:
 
-- ✅ Scripturally Grounded  
-- ✅ Semantically Accurate  
+- ✅ Contextually Accurate  
+- ✅ Semantically Aligned with Scripture  
+- ✅ Explanation-Oriented  
 - ✅ Hallucination-Resistant  
-- ✅ Fully Verifiable  
 
 ---
 
@@ -39,11 +41,11 @@ rag-project-dev/
 ├── ingest/
 │   ├── download_dataset.py    # Downloads Bhagavad Gita dataset
 │   ├── clean_dataset.py       # Cleans & standardizes raw text
-│   ├── chunk_dataset.py       # Splits text into semantic chunks
+│   ├── chunk_dataset.py       # Converts text into structured Q&A chunks
 │   └── embed_chunks.py        # Creates embeddings & stores in ChromaDB
 │
 ├── api/
-│   └── main.py                # FastAPI Backend (HyDE + RAG Logic)
+│   └── main.py                # FastAPI Backend (HyDE + Retrieval Logic)
 │
 ├── app.py                     # Streamlit Frontend
 │
@@ -59,7 +61,7 @@ rag-project-dev/
 
 # 🔄 Data Ingestion Pipeline (Structured ETL)
 
-GitaGPT uses a clean, modular ingestion pipeline:
+GitaGPT follows a clean and modular ingestion workflow.
 
 ## 1️⃣ Download Dataset
 
@@ -74,20 +76,16 @@ python ingest/clean_dataset.py
 ```
 
 - Removes formatting noise  
-- Normalizes structure  
-- Preserves chapter & verse metadata  
+- Normalizes text  
+- Prepares data for structured processing  
 
-## 3️⃣ Chunk Dataset
+## 3️⃣ Chunk Dataset (Q&A Structured)
 
 ```bash
 python ingest/chunk_dataset.py
 ```
 
-- Splits verses into semantically meaningful chunks  
-- Retains:
-  - chapter
-  - verse
-  - text  
+This converts the dataset into structured Question–Answer chunks optimized for retrieval.
 
 ## 4️⃣ Embed & Store
 
@@ -105,11 +103,36 @@ ingest/chroma_db/
 
 ---
 
+# 📦 Chunk Format
+
+Chunks are stored as structured Q&A objects:
+
+```json
+{
+  "text": "Question: ... Answer: ...",
+  "metadata": {
+    "source_question": "...",
+    "chunk_index": 0,
+    "total_chunks": 1
+  }
+}
+```
+
+This means retrieval is:
+
+- Question-aware  
+- Context-preserving  
+- Explanation-focused  
+
+Instead of retrieving raw verses, GitaGPT retrieves **pre-structured explanatory knowledge units**.
+
+---
+
 # 🧠 RAG Architecture
 
 ## 🔍 Step 1 — HyDE Query Expansion
 
-Before retrieval, the system generates a **hypothetical Bhagavad Gita–style paragraph** based on the user’s question.
+Before retrieval, the system generates a **hypothetical Gita-style explanation** based on the user's question.
 
 Example:
 
@@ -117,11 +140,11 @@ User:
 > How do I control stress?
 
 HyDE generates:
-> The restless mind, afflicted by worldly agitation, must be steadied through discipline, detachment, and devotion to one’s dharma...
+> The restless mind, disturbed by worldly agitation, must be steadied through discipline and detachment...
 
 This bridges the gap between:
 
-- Modern vocabulary  
+- Modern language  
 - Scriptural terminology  
 
 Technique used:
@@ -140,27 +163,26 @@ User Question + HyDE Expansion
 
 Then:
 
-- Top 5 semantically similar chunks retrieved from ChromaDB  
-- Improved alignment with scriptural language  
+- Top 5 semantically similar Q&A chunks retrieved from ChromaDB  
+- Improved alignment with spiritual vocabulary  
 - Reduced irrelevant matches  
 
 ---
 
-## 📖 Step 3 — Strict Grounded Generation
+## 📖 Step 3 — Context-Grounded QA Generation
 
 System constraint:
 
 ```
 Answer ONLY using the context.
-Cite Chapter/Verse if available.
 Limit to 5–6 lines.
 ```
 
 This guarantees:
 
-- No external knowledge
-- No speculative additions
-- Scripture-grounded responses only
+- No external knowledge  
+- No speculation  
+- Answer derived strictly from retrieved Q&A chunks  
 
 ---
 
@@ -179,19 +201,15 @@ This will:
 - Create `venv/`
 - Activate environment
 - Upgrade pip
-- Install all dependencies
+- Install dependencies
 
----
-
-### ▶️ Activate Virtual Environment
+### ▶️ Activate
 
 ```bash
 source activate.sh
 ```
 
----
-
-### ⏹️ Deactivate Virtual Environment
+### ⏹️ Deactivate
 
 ```bash
 source deactivate.sh
@@ -201,8 +219,7 @@ source deactivate.sh
 
 ## 🪟 Windows Setup
 
-`setup.sh` is not supported on Windows.  
-Follow manual steps below.
+`setup.sh` is not supported on Windows.
 
 ### 1️⃣ Create Virtual Environment
 
@@ -210,33 +227,28 @@ Follow manual steps below.
 python -m venv venv
 ```
 
-### 2️⃣ Activate Environment
+### 2️⃣ Activate
 
-**PowerShell:**
+PowerShell:
 
 ```powershell
 venv\Scripts\Activate.ps1
 ```
 
-**Command Prompt (cmd):**
+Command Prompt:
 
 ```cmd
 venv\Scripts\activate.bat
 ```
 
-### 3️⃣ Upgrade pip
+### 3️⃣ Install Requirements
 
 ```powershell
 python -m pip install --upgrade pip
-```
-
-### 4️⃣ Install Requirements
-
-```powershell
 pip install -r requirements.txt
 ```
 
-### ⏹️ Deactivate (Windows)
+### ⏹️ Deactivate
 
 ```powershell
 deactivate
@@ -300,11 +312,10 @@ python ingest\embed_chunks.py
 uvicorn api.main:app --reload
 ```
 
-API runs at: 
+API runs at:
 
 ```
 http://127.0.0.1:8000
-http://localhost:8000
 ```
 
 ---
@@ -315,10 +326,9 @@ http://localhost:8000
 streamlit run app.py
 ```
 
-UI opens at: 
+UI runs at:
 
 ```
-http://localhost:8501
 http://localhost:8501
 ```
 
@@ -337,14 +347,14 @@ http://localhost:8501
 
 ---
 
-# 🆚 Why This Is Advanced RAG
+# 🆚 Why This Is More Advanced Than Basic RAG
 
 | Basic RAG | GitaGPT |
 |------------|---------|
 | Raw user query only | HyDE-expanded query |
+| Generic document chunks | Structured Q&A chunks |
 | Weak semantic match | Scriptural-style expansion |
-| No citation enforcement | Chapter/Verse extraction |
-| Loose ingestion script | Structured ETL pipeline |
+| Loose ingestion | Clean ETL pipeline |
 | Higher hallucination risk | Strict context-only answering |
 
 ---
@@ -353,9 +363,9 @@ http://localhost:8501
 
 - Temperature = 0  
 - Context-only answering  
-- Citation extraction  
-- Controlled response length  
+- Limited output length  
 - No external knowledge injection  
+- Retrieval from curated Q&A chunks  
 
 ---
 
@@ -363,25 +373,24 @@ http://localhost:8501
 
 User asks:
 
-> How do I control my restless mind?
+> Why does Dhritarashtra ask Sanjaya to describe the battlefield?
 
 System:
 
 1. Generates HyDE expansion  
-2. Retrieves top 5 relevant verses  
-3. Extracts Chapter/Verse metadata  
-4. Produces grounded 5-line response  
-5. Returns citations  
+2. Retrieves relevant Q&A chunk  
+3. Uses only retrieved explanation  
+4. Produces concise grounded answer  
 
 ---
 
 # 🌺 Future Improvements
 
-- [ ] LLM-based relevance grader (Self-Correcting RAG)
-- [ ] Multi-query expansion (3 variations)
+- [ ] Add chapter/verse metadata support
+- [ ] Implement LLM-based relevance grading
 - [ ] Hybrid search (BM25 + Vector)
 - [ ] Sanskrit + Transliteration toggle
-- [ ] Daily Verse Mode
+- [ ] Daily Learning Mode
 - [ ] Audio Recitation
 - [ ] Mobile App version
 
@@ -391,15 +400,15 @@ System:
 
 **Hrithik Umbarji**
 
-Built with discipline, devotion, and reverence for sacred knowledge.
+Built with discipline, devotion, and a passion for spiritual learning.
 
 ---
 
 # 🕉️ Guiding Principle
 
-“tad viddhi praṇipātena paripraśnena sevayā.”  
-*Approach wisdom with humility, inquiry, and service.* — Bhagavad Gita 4.34
+“na hi jñānena sadṛśaṁ pavitram iha vidyate.”  
+*There is nothing as purifying as true knowledge.* — Bhagavad Gita 4.38
 
 ---
 
-⭐ If this project helps you learn and reflect, consider starring the repository.
+⭐ If this project supports your journey of learning and reflection, consider starring the repository.
