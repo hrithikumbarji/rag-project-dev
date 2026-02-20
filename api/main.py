@@ -48,7 +48,7 @@ def ask(question: str):
     # STEP 2: Enhanced Retrieval
     # We search using a combined query for maximum semantic coverage
     search_query = f"{question} {hyde_expansion}"
-    docs = db.similarity_search(search_query, k=5)
+    docs = db.max_marginal_relevance_search(search_query, k=5, fetch_k=20)
 
     if not docs:
         return {"answer": "No relevant verses found.", "expansion": hyde_expansion, "sources": []}
